@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+   
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/gouniaksharareddy/MavenJavaDemo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Building the project..."
+                bat "mvn clean compile"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests..."
+                bat "mvn test"
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Build finished"
+        }
+        success {
+            echo "Build and tests succeeded!"
+        }
+        failure {
+            echo "Build or tests failed!"
+        }
+    }
+}
